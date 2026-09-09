@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>Portfolio Overview</h3>
+<div class="row my-3">
+    <div class="col-md-4"><div class="card p-3 bg-primary text-white">Total Value: {{ summary.total_value }}</div></div>
+    <div class="col-md-4"><div class="card p-3 bg-success text-white">Total Assets: {{ summary.total_properties }}</div></div>
+    <div class="col-md-4"><div class="card p-3 bg-info text-white">Avg Yield: {{ summary.avg_yield }}%</div></div>
+</div>
+<table class="table table-striped mt-3">
+    <thead>
+        <tr><th>Title</th><th>Location</th><th>Type</th><th>Purchase Price</th><th>Current Value</th></tr>
+    </thead>
+    <tbody>
+        {% for prop in properties %}
+        <tr>
+            <td>{{ prop.title }}</td>
+            <td>{{ prop.location }}</td>
+            <td>{{ prop.type }}</td>
+            <td>{{ prop.purchase_price }}</td>
+            <td>{{ prop.current_value }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
