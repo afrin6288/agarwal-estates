@@ -4,81 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agarwal Estates</title>
-    <!-- Bootstrap 5 CSS CDN -->
+    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f4f6f9;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        .navbar {
-            background-color: #1a252f !important;
-        }
-        .navbar-brand, .nav-link {
-            color: #ffffff !important;
-        }
-        .nav-link:hover {
-            color: #00bc8c !important;
-        }
-        .card {
-            border: none;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        }
-        .btn-primary {
-            background-color: #0d6efd;
-            border: none;
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-dark mb-4">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="#">Agarwal Estates</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('price_predict') }}">Price Prediction</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('compare') }}">Compare Localities</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('emi') }}">EMI Calculator</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url_for('nri_desk') }}">NRI Desk</a></li>
-                    {% if session.get('role') == 'admin' %}
-                        <li class="nav-item"><a class="nav-link text-warning fw-bold" href="{{ url_for('portfolio') }}">Portfolio</a></li>
-                        <li class="nav-item"><a class="nav-link text-warning fw-bold" href="{{ url_for('dataset_management') }}">Dataset</a></li>
-                        <li class="nav-item"><a class="nav-link text-warning fw-bold" href="{{ url_for('audit_logs') }}">Audit Logs</a></li>
-                    {% endif %}
-                    {% if session.get('user') %}
-                        <li class="nav-item"><a class="nav-link text-danger ms-2" href="{{ url_for('logout') }}">Logout</a></li>
-                    {% endif %}
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Main Content Container -->
-    <div class="container mb-5">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-                        {{ message }}
-                        <button type="To apply styling across all pages at once, update your `templates/base.html` file on GitHub. Because every page extends `base.html`, adding Bootstrap 5 directly into it will fix the missing layout and CSS for all pages simultaneously.
-
-Here is the updated `templates/base.html` code:
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agarwal Estates</title>
-    <!-- Bootstrap 5 CSS CDN -->
-    <link href="[https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css](https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css)" rel="stylesheet">
     <style>
         body {
             background-color: #f8f9fa;
@@ -147,16 +74,31 @@ Here is the updated `templates/base.html` code:
                 {% for category, message in messages %}
                     <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
                         {{ message }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    </div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
+                        <button type="button" class="btn-close" data-bsThe error shows a 500 Internal Server Error when Flask tries to render the login page (`Exception on /login [GET]`). This usually happens when `login.html` is missing or when it tries to extend `base.html` while `base.html` has a syntax error.
 
+To fix this, ensure both template files are set up correctly in GitHub:
+
+### 1. Update `templates/base.html`
+In GitHub, open `templates/base.html`, click the edit icon, replace everything with the structure below, and commit:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agarwal Estates</title>
+    <link href="[https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css](https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css)" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">Agarwal Estates</a>
+        </div>
+    </nav>
+    <div class="container">
         {% block content %}{% endblock %}
     </div>
-
-    <!-- Bootstrap 5 JavaScript Bundle CDN -->
     <script src="[https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js](https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js)"></script>
 </body>
 </html>
