@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card p-4 shadow">
+    <h3 class="text-center">Compare Real Estate Localities</h3>
+    <form method="POST" class="mt-3">
+        <div class="row g-3">
+            <div class="col-md-5">
+                <input type="text" name="locality1" class="form-control" placeholder="Locality 1 (e.g. Whitefield)" required>
+            </div>
+            <div class="col-md-2 text-center fw-bold">VS</div>
+            <div class="col-md-5">
+                <input type="text" name="locality2" class="form-control" placeholder="Locality 2 (e.g. Indiranagar)" required>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-success w-100 mt-3">Compare</button>
+    </form>
+
+    {% if comparison_data %}
+        <table class="table table-bordered mt-4 text-center">
+            <thead class="table-dark">
+                <tr><th>Metric</th><th>{{ comparison_data.locality1.name }}</th><th>{{ comparison_data.locality2.name }}</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Avg Price / sqft</td><td>{{ comparison_data.locality1.avg_price }}</td><td>{{ comparison_data.locality2.avg_price }}</td></tr>
+                <tr><td>Price Range</td><td>{{ comparison_data.locality1.price_range }}</td><td>{{ comparison_data.locality2.price_range }}</td></tr>
+                <tr><td>Growth</td><td>{{ comparison_data.locality1.growth }}</td><td>{{ comparison_data.locality2.growth }}</td></tr>
+                <tr><td>Connectivity</td><td>{{ comparison_data.locality1.connectivity }}</td><td>{{ comparison_data.locality2.connectivity }}</td></tr>
+                <tr><td>Livability</td><td>{{ comparison_data.locality1.livability }}</td><td>{{ comparison_data.locality2.livability }}</td></tr>
+            </tbody>
+        </table>
+    {% endif %}
+</div>
+{% endblock %}
