@@ -6,10 +6,22 @@ app = Flask(__name__)
 app.secret_key = 'agarwal_estates_secure_key_999'
 
 ADMIN_PIN = "1234"
+DATASET_FILE = 'Bengaluru_House_Data.csv'
 
 PORTFOLIO_DATA = [
     {'title': 'Luxury 3BHK Villa', 'location': 'Whitefield', 'type': 'Residential', 'purchase_price': '₹75,00,000', 'current_value': '₹85,00,000', 'status': 'Active'}
 ]
+
+def load_locations():
+    """Helper function to load unique locations from the dataset if available."""
+    if os.path.exists(DATASET_FILE):
+        try:
+            df = pd.read_csv(DATASET_FILE)
+            if 'location' in df.columns:
+                return sorted(df['location'].dropna().astype(str).unique().tolist())
+        except Exception:
+            pass
+    return ["Whitefield", "Sarjapur Road", "Electronic City", "Hebbal", "Indiranagar", "Koramangala"]
 
 @app.route('/')
 def home():
@@ -63,7 +75,9 @@ def price_predict():
     if 'user' not in session:
         return redirect(url_for('login'))
 
+    locations = load_locations()
     prediction = None
+
     if request.method == 'POST':
         try:
             sqft = float(request.form.get('sqft', 1000))
@@ -81,14 +95,16 @@ def price_predict():
         except ValueError:
             prediction = None
 
-    return render_template('price_predict.html', prediction=prediction)
+    return render_template('price_predict.html', prediction=prediction, locations=locations)
 
 @app.route('/compare', methods=['GET', 'POST'])
 def compare():
     if 'user' not in session:
         return redirect(url_for('login'))
         
+    locations = load_locations()
     comparison_data = None
+
     if request.method == 'POST':
         loc1 = request.form.get('locality1', '').strip()
         loc2 = request.form.get('locality2', '').strip()
@@ -113,7 +129,7 @@ def compare():
                 }
             }
             
-    return render_template('compare.html', comparison_data=comparison_data)
+    return render_template('compare.html', comparison_data=comparison_data, locations=locations)
 
 @app.route('/emi', methods=['GET', 'POST'])
 def emi():
@@ -183,20 +199,30 @@ def dataset_management():
     col_count = 0
     message = None
 
-    if request.method == 'POST':
+    if request.method == 'POST' and 'dataset_file' in request.files:
         file = request.files.get('dataset_file')
         if file and file.filename.endswith('.csv'):
             try:
                 df = pd.read_csv(file)
                 row_count, col_count = df.shape
-                
-                tables = df.to_html(
+                tables = df.head(100).to_html(
                     classes='table table-striped table-hover table-bordered table-dark text-nowrap', 
                     index=True
                 )
-                message = f"Full Dataset Loaded Successfully! Total Records: {row_count:,} Rows | {col_count} Columns"
+                message = f"Uploaded Dataset Loaded Successfully! Total Records: {row_count:,} Rows | {col_count} Columns"
             except Exception as e:
                 message = f"Error processing CSV: {str(e)}"
+    elif os.path.exists(DATASET_FILE):
+        try:
+            df = pd.read_csv(DATASET_FILE)
+            row_count, col_count = df.shape
+            tables = df.head(100).to_html(
+                classes='table table-striped table-hover table-bordered table-dark text-nowrap', 
+                index=True
+            )
+            message = f"Default Dataset ({DATASET_FILE}) Loaded Successfully! Total Records: {row_count:,} Rows | {col_count} Columns"
+        except Exception as e:
+            message = f"Error loading default dataset: {str(e)}"
 
     return render_template(
         'dataset_management.html', 
@@ -207,4 +233,5 @@ def dataset_management():
     )
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
