@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>Dataset Management (Admin Only)</h3>
+{% if message %}
+    <div class="alert alert-info">{{ message }}</div>
+{% endif %}
+<div class="card p-4 shadow mb-4">
+    <form method="POST" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label class="form-label fw-bold">Upload Property CSV File</label>
+            <input type="file" name="dataset_file" class="form-control" accept=".csv" required>
+        </div>
+        <button type="submit" class="btn btn-warning">Upload Dataset</button>
+    </form>
+</div>
+{% if tables %}
+    <div class="table-responsive bg-dark p-3 rounded" style="max-height: 500px; overflow: auto;">
+        {{ tables|safe }}
+    </div>
+{% endif %}
+{% endblock %}
